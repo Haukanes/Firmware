@@ -360,8 +360,6 @@ PrecLand::run_state_fallback()
 
 	//Get funnel radius at current altitude (AGL) 
 	float funnel_radius = alt>funnel_tip_height ? funnel_tip_radius+alt*funnel_grow_rate : funnel_tip_radius;
-
-	PX4_INFO("dist: %0.7f, funnel_radius: %0.7f, alt: %0.7f", (double)dist, (double)funnel_radius, (double)alt);
 	
 	//If outside funnel
 	if (dist > funnel_radius && pos_sp_triplet->current.type!=position_setpoint_s::SETPOINT_TYPE_POSITION && alt>_param_final_approach_alt.get()){
