@@ -238,6 +238,7 @@ Mission::on_active()
 			_work_item_type = WORK_ITEM_TYPE_DEFAULT;
 
 		} else {
+			_navigator->get_precland()->set_position(_mission_item.lat, _mission_item.lon);
 			_navigator->get_precland()->on_active();
 		}
 	}

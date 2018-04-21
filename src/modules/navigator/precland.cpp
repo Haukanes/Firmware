@@ -348,7 +348,35 @@ PrecLand::run_state_search()
 void
 PrecLand::run_state_fallback()
 {
-	// nothing to do, will land
+	position_setpoint_triplet_s *pos_sp_triplet = _navigator->get_position_setpoint_triplet();
+	float dist = get_distance_to_next_waypoint(pos_sp_triplet->current.lat, pos_sp_triplet->current.lon,
+			_navigator->get_global_position()->lat, _navigator->get_global_position()->lon);
+	
+	float alt=-(_navigator->get_local_position()->z);
+
+	const float funnel_tip_radius = _param_lacc_rad.get();
+	const float funnel_tip_height= 1;
+	const float funnel_grow_rate=0.1;
+
+	//Get funnel radius at current altitude (AGL) 
+	float funnel_radius = alt>funnel_tip_height ? funnel_tip_radius+alt*funnel_grow_rate : funnel_tip_radius;
+
+	PX4_INFO("dist: %0.7f, funnel_radius: %0.7f, alt: %0.7f", (double)dist, (double)funnel_radius, (double)alt);
+	
+	//If outside funnel
+	if (dist > funnel_radius && pos_sp_triplet->current.type!=position_setpoint_s::SETPOINT_TYPE_POSITION && alt>_param_final_approach_alt.get()){
+		pos_sp_triplet->current.type = position_setpoint_s::SETPOINT_TYPE_POSITION;
+		pos_sp_triplet->current.alt=_navigator->get_global_position()->alt;
+		_navigator->set_position_setpoint_triplet_updated();
+
+		PX4_WARN("Switched to position waypoint");
+	}
+	//If inside funnel
+	if (dist <= funnel_radius && pos_sp_triplet->current.type!=position_setpoint_s::SETPOINT_TYPE_LAND){
+		pos_sp_triplet->current.type = position_setpoint_s::SETPOINT_TYPE_LAND;
+		_navigator->set_position_setpoint_triplet_updated();
+		PX4_WARN("Switched to land waypoint");
+	} 
 }
 
 bool

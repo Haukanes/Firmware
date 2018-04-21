@@ -54,6 +54,20 @@
 PARAM_DEFINE_FLOAT(PLD_BTOUT, 5.0f);
 
 /**
+ * Landing acceptance radius
+ *
+ * Start final approach if closer above landing target than this.
+ *
+ * @unit m
+ * @min 0.0
+ * @max 10
+ * @decimal 2
+ * @increment 0.1
+ * @group Precision Land
+ */
+PARAM_DEFINE_FLOAT(PLD_LACC_RAD, 0.1f);
+
+/**
  * Horizontal acceptance radius
  *
  * Start descending if closer above landing target than this.

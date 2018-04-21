@@ -73,6 +73,7 @@ public:
 	void on_active() override;
 
 	void set_mode(PrecLandMode mode) { _mode = mode; };
+	void set_position(double lat, double lon) {fallback_lat=lat;fallback_lon=lon;};
 
 	PrecLandMode get_mode() { return _mode; };
 
@@ -99,6 +100,9 @@ private:
 	void slewrate(float &sp_x, float &sp_y);
 
 	landing_target_pose_s _target_pose{}; /**< precision landing target position */
+	
+	double fallback_lat{-1};
+	double fallback_lon{-1};
 
 	int _target_pose_sub{-1};
 	bool _target_pose_valid{false}; /**< whether we have received a landing target position message */
@@ -124,6 +128,7 @@ private:
 	DEFINE_PARAMETERS(
 		(ParamFloat<px4::params::PLD_BTOUT>) _param_timeout,
 		(ParamFloat<px4::params::PLD_HACC_RAD>) _param_hacc_rad,
+		(ParamFloat<px4::params::PLD_LACC_RAD>) _param_lacc_rad,
 		(ParamFloat<px4::params::PLD_FAPPR_ALT>) _param_final_approach_alt,
 		(ParamFloat<px4::params::PLD_SRCH_ALT>) _param_search_alt,
 		(ParamFloat<px4::params::PLD_SRCH_TOUT>) _param_search_timeout,
