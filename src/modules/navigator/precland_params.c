@@ -70,7 +70,7 @@ PARAM_DEFINE_FLOAT(PLD_LACC_RAD, 0.1f);
 /**
  * Horizontal acceptance radius
  *
- * Start descending if closer above landing target than this.
+ * Acceptance radius for final descent in precision land fallback mode.
  *
  * @unit m
  * @min 0.0
