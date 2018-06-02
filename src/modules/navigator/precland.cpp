@@ -459,8 +459,8 @@ PrecLand::switch_to_state_fallback()
 {
 	PX4_WARN("Falling back to normal land.");
 	position_setpoint_triplet_s *pos_sp_triplet = _navigator->get_position_setpoint_triplet();
-	pos_sp_triplet->current.lat = _navigator->get_global_position()->lat;
-	pos_sp_triplet->current.lon = _navigator->get_global_position()->lon;
+	pos_sp_triplet->current.lat = fallback_lat;
+	pos_sp_triplet->current.lon = fallback_lon;
 	pos_sp_triplet->current.alt = _navigator->get_global_position()->alt;
 	pos_sp_triplet->current.type = position_setpoint_s::SETPOINT_TYPE_LAND;
 	_navigator->set_position_setpoint_triplet_updated();
